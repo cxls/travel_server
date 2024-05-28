@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysScenicSpotMapper">
+    
+    <resultMap type="SysScenicSpot" id="SysScenicSpotResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="location"    column="location"    />
+        <result property="description"    column="description"    />
+        <result property="region"    column="region"    />
+        <result property="ticketPrice"    column="ticket_price"    />
+    </resultMap>
+
+    <sql id="selectSysScenicSpotVo">
+        select id, name, location, description, region, ticket_price from sys_scenic_spot
+    </sql>
+
+    <select id="selectSysScenicSpotList" parameterType="SysScenicSpot" resultMap="SysScenicSpotResult">
+        <include refid="selectSysScenicSpotVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="location != null  and location != ''"> and location = #{location}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="region != null  and region != ''"> and region = #{region}</if>
+            <if test="ticketPrice != null "> and ticket_price = #{ticketPrice}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysScenicSpotById" parameterType="Long" resultMap="SysScenicSpotResult">
+        <include refid="selectSysScenicSpotVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysScenicSpot" parameterType="SysScenicSpot" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_scenic_spot
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="location != null and location != ''">location,</if>
+            <if test="description != null">description,</if>
+            <if test="region != null and region != ''">region,</if>
+            <if test="ticketPrice != null">ticket_price,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="location != null and location != ''">#{location},</if>
+            <if test="description != null">#{description},</if>
+            <if test="region != null and region != ''">#{region},</if>
+            <if test="ticketPrice != null">#{ticketPrice},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysScenicSpot" parameterType="SysScenicSpot">
+        update sys_scenic_spot
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="location != null and location != ''">location = #{location},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="region != null and region != ''">region = #{region},</if>
+            <if test="ticketPrice != null">ticket_price = #{ticketPrice},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysScenicSpotById" parameterType="Long">
+        delete from sys_scenic_spot where id = #{id}
+    </delete>
+
+    <delete id="deleteSysScenicSpotByIds" parameterType="String">
+        delete from sys_scenic_spot where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
