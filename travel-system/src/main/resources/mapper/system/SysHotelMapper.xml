@@ -11,10 +11,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="region"    column="region"    />
         <result property="description"    column="description"    />
         <result property="price"    column="price"    />
+        <result property="imageUrl"    column="image_url"    />
+        <result property="createBy"   column="create_by"   />
+        <result property="createTime" column="create_time" />
+        <result property="updateBy"   column="update_by"   />
+        <result property="updateTime" column="update_time" />
     </resultMap>
 
     <sql id="selectSysHotelVo">
-        select id, name, location, region, description, price from sys_hotel
+        select id, name, location, region, description, price, image_url,create_by, create_time, remark from sys_hotel
     </sql>
 
     <select id="selectSysHotelList" parameterType="SysHotel" resultMap="SysHotelResult">
@@ -41,6 +46,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="region != null and region != ''">region,</if>
             <if test="description != null">description,</if>
             <if test="price != null">price,</if>
+            <if test="imageUrl != null">image_url,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="name != null and name != ''">#{name},</if>
@@ -48,6 +56,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="region != null and region != ''">#{region},</if>
             <if test="description != null">#{description},</if>
             <if test="price != null">#{price},</if>
+            <if test="imageUrl != null">#{imageUrl},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
          </trim>
     </insert>
 
@@ -59,6 +70,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="region != null and region != ''">region = #{region},</if>
             <if test="description != null">description = #{description},</if>
             <if test="price != null">price = #{price},</if>
+            <if test="imageUrl != null">image_url = #{imageUrl},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
         </trim>
         where id = #{id}
     </update>

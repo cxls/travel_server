@@ -37,7 +37,7 @@ public class SysHotelController extends BaseController
     /**
      * 查询酒店信息列表
      */
-    @PreAuthorize("@ss.hasPermi('system:hotel:list')")
+//    @PreAuthorize("@ss.hasPermi('system:hotel:list')")
     @GetMapping("/list")
     public TableDataInfo list(SysHotel sysHotel)
     {
@@ -62,7 +62,7 @@ public class SysHotelController extends BaseController
     /**
      * 获取酒店信息详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:hotel:query')")
+//    @PreAuthorize("@ss.hasPermi('system:hotel:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -72,7 +72,7 @@ public class SysHotelController extends BaseController
     /**
      * 新增酒店信息
      */
-    @PreAuthorize("@ss.hasPermi('system:hotel:add')")
+//    @PreAuthorize("@ss.hasPermi('system:hotel:add')")
     @Log(title = "酒店信息", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody SysHotel sysHotel)
@@ -83,7 +83,7 @@ public class SysHotelController extends BaseController
     /**
      * 修改酒店信息
      */
-    @PreAuthorize("@ss.hasPermi('system:hotel:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:hotel:edit')")
     @Log(title = "酒店信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody SysHotel sysHotel)
@@ -94,7 +94,7 @@ public class SysHotelController extends BaseController
     /**
      * 删除酒店信息
      */
-    @PreAuthorize("@ss.hasPermi('system:hotel:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:hotel:remove')")
     @Log(title = "酒店信息", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

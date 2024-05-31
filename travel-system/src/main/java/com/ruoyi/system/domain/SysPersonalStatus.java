@@ -28,6 +28,10 @@ public class SysPersonalStatus extends BaseEntity
     @Excel(name = "动态内容")
     private String content;
 
+    /** 发布地址 */
+    @Excel(name = "发布地址")
+    private String region;
+
     /** 图片的URL或路径，多张用英文,分隔 */
     @Excel(name = "图片的URL或路径，多张用英文,分隔")
     private String imageUrls;
@@ -83,6 +87,14 @@ public class SysPersonalStatus extends BaseEntity
         return createdAt;
     }
 
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -91,6 +103,7 @@ public class SysPersonalStatus extends BaseEntity
             .append("content", getContent())
             .append("imageUrls", getImageUrls())
             .append("createdAt", getCreatedAt())
+            .append("region", getRegion())
             .toString();
     }
 }

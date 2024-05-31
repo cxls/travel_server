@@ -37,7 +37,7 @@ public class SysPersonalStatusController extends BaseController
     /**
      * 查询个人动态列表
      */
-    @PreAuthorize("@ss.hasPermi('system:status:list')")
+//    @PreAuthorize("@ss.hasPermi('system:status:list')")
     @GetMapping("/list")
     public TableDataInfo list(SysPersonalStatus sysPersonalStatus)
     {
@@ -62,7 +62,7 @@ public class SysPersonalStatusController extends BaseController
     /**
      * 获取个人动态详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:status:query')")
+//    @PreAuthorize("@ss.hasPermi('system:status:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -72,7 +72,7 @@ public class SysPersonalStatusController extends BaseController
     /**
      * 新增个人动态
      */
-    @PreAuthorize("@ss.hasPermi('system:status:add')")
+//    @PreAuthorize("@ss.hasPermi('system:status:add')")
     @Log(title = "个人动态", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody SysPersonalStatus sysPersonalStatus)
@@ -83,7 +83,7 @@ public class SysPersonalStatusController extends BaseController
     /**
      * 修改个人动态
      */
-    @PreAuthorize("@ss.hasPermi('system:status:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:status:edit')")
     @Log(title = "个人动态", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody SysPersonalStatus sysPersonalStatus)
@@ -94,7 +94,7 @@ public class SysPersonalStatusController extends BaseController
     /**
      * 删除个人动态
      */
-    @PreAuthorize("@ss.hasPermi('system:status:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:status:remove')")
     @Log(title = "个人动态", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

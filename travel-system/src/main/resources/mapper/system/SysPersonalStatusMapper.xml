@@ -10,6 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="content"    column="content"    />
         <result property="imageUrls"    column="image_urls"    />
         <result property="createdAt"    column="created_at"    />
+        <result property="region"    column="region"    />
     </resultMap>
 
     <sql id="selectSysPersonalStatusVo">
@@ -23,6 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="content != null  and content != ''"> and content = #{content}</if>
             <if test="imageUrls != null  and imageUrls != ''"> and image_urls = #{imageUrls}</if>
             <if test="createdAt != null "> and created_at = #{createdAt}</if>
+            <if test="region != null "> and region = #{region}</if>
         </where>
     </select>
     
@@ -38,12 +40,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="content != null and content != ''">content,</if>
             <if test="imageUrls != null">image_urls,</if>
             <if test="createdAt != null">created_at,</if>
+            <if test="region != null">region,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="userId != null">#{userId},</if>
             <if test="content != null and content != ''">#{content},</if>
             <if test="imageUrls != null">#{imageUrls},</if>
             <if test="createdAt != null">#{createdAt},</if>
+            <if test="region != null">#{region},</if>
          </trim>
     </insert>
 
@@ -54,6 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="content != null and content != ''">content = #{content},</if>
             <if test="imageUrls != null">image_urls = #{imageUrls},</if>
             <if test="createdAt != null">created_at = #{createdAt},</if>
+            <if test="region != null">region = #{region},</if>
         </trim>
         where id = #{id}
     </update>

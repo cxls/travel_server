@@ -39,6 +39,10 @@ public class SysHotel extends BaseEntity
     @Excel(name = "酒店价格")
     private BigDecimal price;
 
+    /** 缩略图 */
+    @Excel(name = "缩略图")
+    private String imageUrl;
+
     public void setId(Long id) 
     {
         this.id = id;
@@ -94,6 +98,14 @@ public class SysHotel extends BaseEntity
         return price;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -103,6 +115,7 @@ public class SysHotel extends BaseEntity
             .append("region", getRegion())
             .append("description", getDescription())
             .append("price", getPrice())
+            .append("imageUrl", getImageUrl())
             .toString();
     }
 }
