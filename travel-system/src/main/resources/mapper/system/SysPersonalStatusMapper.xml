@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.SysPersonalStatusMapper">
-    
+
     <resultMap type="SysPersonalStatus" id="SysPersonalStatusResult">
         <result property="id"    column="id"    />
         <result property="userId"    column="user_id"    />
@@ -11,15 +11,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="imageUrls"    column="image_urls"    />
         <result property="createdAt"    column="created_at"    />
         <result property="region"    column="region"    />
+        <result property="createBy"      column="create_by"     />
+        <result property="createTime"    column="create_time"   />
+        <result property="updateBy"      column="update_by"     />
+        <result property="updateTime"    column="update_time"   />
+        <result property="remark"        column="remark"        />
     </resultMap>
 
     <sql id="selectSysPersonalStatusVo">
-        select id, user_id, content, image_urls, created_at from sys_personal_status
+        select id, user_id, content, image_urls, region, created_at, create_by, create_time, update_by, update_time, remark from sys_personal_status
     </sql>
 
     <select id="selectSysPersonalStatusList" parameterType="SysPersonalStatus" resultMap="SysPersonalStatusResult">
         <include refid="selectSysPersonalStatusVo"/>
-        <where>  
+        <where>
             <if test="userId != null "> and user_id = #{userId}</if>
             <if test="content != null  and content != ''"> and content = #{content}</if>
             <if test="imageUrls != null  and imageUrls != ''"> and image_urls = #{imageUrls}</if>
@@ -27,12 +32,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="region != null "> and region = #{region}</if>
         </where>
     </select>
-    
+
     <select id="selectSysPersonalStatusById" parameterType="Long" resultMap="SysPersonalStatusResult">
         <include refid="selectSysPersonalStatusVo"/>
         where id = #{id}
     </select>
-        
+
     <insert id="insertSysPersonalStatus" parameterType="SysPersonalStatus" useGeneratedKeys="true" keyProperty="id">
         insert into sys_personal_status
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -68,7 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteSysPersonalStatusByIds" parameterType="String">
-        delete from sys_personal_status where id in 
+        delete from sys_personal_status where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
