@@ -1,75 +1,180 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-
+    <el-form
+      :model="queryParams"
+      ref="queryForm"
+      size="small"
+      :inline="true"
+      v-show="showSearch"
+      label-width="68px"
+    >
       <el-form-item label="创建时间" prop="createdAt">
-        <el-date-picker clearable v-model="queryParams.createdAt" type="date" value-format="yyyy-MM-dd"
-          placeholder="请选择创建时间">
+        <el-date-picker
+          clearable
+          v-model="queryParams.createdAt"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="请选择创建时间"
+        >
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-search"
+          size="mini"
+          @click="handleQuery"
+          >搜索</el-button
+        >
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
+          >重置</el-button
+        >
       </el-form-item>
     </el-form>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
-          v-hasPermi="['system:status:add']">新增</el-button>
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-plus"
+          size="mini"
+          @click="handleAdd"
+          v-hasPermi="['system:status:add']"
+          >新增</el-button
+        >
       </el-col>
       <el-col :span="1.5">
-        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
-          v-hasPermi="['system:status:edit']">修改</el-button>
+        <el-button
+          type="success"
+          plain
+          icon="el-icon-edit"
+          size="mini"
+          :disabled="single"
+          @click="handleUpdate"
+          v-hasPermi="['system:status:edit']"
+          >修改</el-button
+        >
       </el-col>
       <el-col :span="1.5">
-        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
-          v-hasPermi="['system:status:remove']">删除</el-button>
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
+          @click="handleDelete"
+          v-hasPermi="['system:status:remove']"
+          >删除</el-button
+        >
       </el-col>
       <el-col :span="1.5">
-        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
-          v-hasPermi="['system:status:export']">导出</el-button>
+        <el-button
+          type="warning"
+          plain
+          icon="el-icon-download"
+          size="mini"
+          @click="handleExport"
+          v-hasPermi="['system:status:export']"
+          >导出</el-button
+        >
       </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+      <right-toolbar
+        :showSearch.sync="showSearch"
+        @queryTable="getList"
+      ></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="statusList" @selection-change="handleSelectionChange">
+    <el-table
+      v-loading="loading"
+      :data="statusList"
+      @selection-change="handleSelectionChange"
+    >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="用户" align="center" prop="userId" />
-      <el-table-column label="动态内容" align="center" prop="content" />
-      <el-table-column label="图片" align="center" prop="imageUrls" />
-      <el-table-column label="发表时间" align="center" prop="createdAt" width="180">
+      <el-table-column label="用户" align="center" prop="createBy" />
+      <el-table-column label="发布地址" align="center" prop="region" />
+      <el-table-column label="动态内容" align="center" prop="content">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createdAt, '{y}-{m}-{d}') }}</span>
+          <el-tooltip :content="scope.row.content" placement="top">
+            <p class="descStyle">{{ scope.row.content }}</p>
+          </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <!-- <el-table-column label="图片" align="center" prop="imageUrls" /> -->
+      <!-- <el-table-column
+        label="缩略图"
+        align="center"
+        prop="imageUrl"
+        width="100"
+      >
         <template slot-scope="scope">
-          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:status:edit']">修改</el-button>
-          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
-            v-hasPermi="['system:status:remove']">删除</el-button>
+          <image-preview :src="scope.row.imageUrl" :width="50" :height="50" />
+        </template>
+      </el-table-column> -->
+      <el-table-column
+        label="发表时间"
+        align="center"
+        prop="createdAt"
+        width="180"
+      >
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createdAt, "{y}-{m}-{d}") }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="操作"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['system:status:edit']"
+            >修改</el-button
+          >
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row)"
+            v-hasPermi="['system:status:remove']"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
-      @pagination="getList" />
+    <pagination
+      v-show="total > 0"
+      :total="total"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="getList"
+    />
 
     <!-- 添加或修改个人动态对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="用户ID" prop="userId">
+        <!-- <el-form-item label="用户ID" prop="userId">
           <el-input v-model="form.userId" placeholder="请输入用户ID" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="动态内容">
           <editor v-model="form.content" :min-height="192" />
         </el-form-item>
-        <el-form-item label="图片" prop="imageUrls">
-          <el-input v-model="form.imageUrls" placeholder="请输入图片" />
+        <el-form-item label="地址" prop="region">
+          <!-- <el-input v-model="form.region" placeholder="请输入酒店地址" /> -->
+          <area-selector
+            v-model="form.regionArr"
+            @change="areaChange"
+          ></area-selector>
         </el-form-item>
-
+        <el-form-item label="图片列表" prop="imageUrls">
+          <image-upload v-model="form.imageUrls" />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -80,11 +185,22 @@
 </template>
 
 <script>
-import { listStatus, getStatus, delStatus, addStatus, updateStatus } from "@/api/system/status";
+import {
+  listStatus,
+  getStatus,
+  delStatus,
+  addStatus,
+  updateStatus,
+} from "@/api/system/status";
+
+import AreaSelector from "@/components/AreaSelector";
 
 export default {
   name: "Status",
-  data () {
+  components: {
+    AreaSelector,
+  },
+  data() {
     return {
       // 遮罩层
       loading: true,
@@ -111,97 +227,96 @@ export default {
         userId: null,
         content: null,
         imageUrls: null,
-        createdAt: null
+        createdAt: null,
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        userId: [
-          { required: true, message: "用户不能为空", trigger: "blur" }
-        ],
+        userId: [{ required: true, message: "用户不能为空", trigger: "blur" }],
         content: [
-          { required: true, message: "动态内容不能为空", trigger: "blur" }
+          { required: true, message: "动态内容不能为空", trigger: "blur" },
         ],
-      }
+      },
     };
   },
-  created () {
+  created() {
     this.getList();
   },
   methods: {
     /** 查询个人动态列表 */
-    getList () {
+    getList() {
       this.loading = true;
-      listStatus(this.queryParams).then(response => {
+      listStatus(this.queryParams).then((response) => {
         this.statusList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
     },
     // 取消按钮
-    cancel () {
+    cancel() {
       this.open = false;
       this.reset();
     },
     // 表单重置
-    reset () {
+    reset() {
       this.form = {
         id: null,
         userId: null,
         content: null,
         imageUrls: null,
-        createdAt: null
+        createdAt: null,
       };
       this.resetForm("form");
     },
+    areaChange(val) {
+      this.form.region = val;
+    },
     /** 搜索按钮操作 */
-    handleQuery () {
+    handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList();
     },
     /** 重置按钮操作 */
-    resetQuery () {
+    resetQuery() {
       this.resetForm("queryForm");
       this.handleQuery();
     },
     // 多选框选中数据
-    handleSelectionChange (selection) {
-      this.ids = selection.map(item => item.id)
-      this.single = selection.length !== 1
-      this.multiple = !selection.length
+    handleSelectionChange(selection) {
+      this.ids = selection.map((item) => item.id);
+      this.single = selection.length !== 1;
+      this.multiple = !selection.length;
     },
     /** 新增按钮操作 */
-    handleAdd () {
+    handleAdd() {
       this.reset();
       this.open = true;
       this.title = "添加个人动态";
     },
     /** 修改按钮操作 */
-    handleUpdate (row) {
+    handleUpdate(row) {
       this.reset();
-      const id = row.id || this.ids
-      getStatus(id).then(response => {
+      const id = row.id || this.ids;
+      getStatus(id).then((response) => {
         this.form = response.data;
         this.open = true;
         this.title = "修改个人动态";
       });
     },
     /** 提交按钮 */
-    submitForm () {
-      this.$refs["form"].validate(valid => {
-        if (valid)
-        {
-          if (this.form.id != null)
-          {
-            updateStatus(this.form).then(response => {
+    submitForm() {
+      this.$refs["form"].validate((valid) => {
+        if (valid) {
+          console.log(this.form);
+          if (this.form.id != null) {
+            updateStatus(this.form).then((response) => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
-          } else
-          {
-            addStatus(this.form).then(response => {
+          } else {
+            addStatus(this.form).then((response) => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -211,21 +326,41 @@ export default {
       });
     },
     /** 删除按钮操作 */
-    handleDelete (row) {
+    handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除个人动态编号为"' + ids + '"的数据项？').then(function () {
-        return delStatus(ids);
-      }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => { });
+      this.$modal
+        .confirm('是否确认删除个人动态编号为"' + ids + '"的数据项？')
+        .then(function () {
+          return delStatus(ids);
+        })
+        .then(() => {
+          this.getList();
+          this.$modal.msgSuccess("删除成功");
+        })
+        .catch(() => {});
     },
     /** 导出按钮操作 */
-    handleExport () {
-      this.download('system/status/export', {
-        ...this.queryParams
-      }, `status_${new Date().getTime()}.xlsx`)
-    }
-  }
+    handleExport() {
+      this.download(
+        "system/status/export",
+        {
+          ...this.queryParams,
+        },
+        `status_${new Date().getTime()}.xlsx`
+      );
+    },
+  },
 };
 </script>
+
+<style scoped>
+.descStyle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /*行数 */
+  -webkit-box-orient: vertical;
+}
+</style>
